@@ -1,24 +1,70 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  // State for random city modal
+  const [activeCategoryData, setActiveCategoryData] = useState(null);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+
+  // Database of cities per category
+  const categoryDatabase = {
+    heritage: [
+      { city: "Jaipur", title: "The Pink City", desc: "Dive into royal history with the majestic Amber Fort and City Palace.", img: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=800" },
+      { city: "Hampi", title: "Ruins of an Empire", desc: "Wander through the breathtaking stone chariots and ancient temples of the Vijayanagara Empire.", img: "https://images.unsplash.com/photo-1620766165457-a8025baa82e0?q=80&w=800" },
+      { city: "Varanasi", title: "The Spiritual Heart", desc: "Experience the timeless rituals and ancient ghats along the sacred Ganges river.", img: "https://res.cloudinary.com/ddbqj52jr/image/upload/q_auto/f_auto/v1775651240/varanasi_ftimbu.jpg" },
+      { city: "Agra", title: "Mughal Majesty", desc: "Home to the iconic Taj Mahal, a global symbol of eternal love and architectural brilliance.", img: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" },
+      { city: "Mysore", title: "City of Palaces", desc: "Marvel at the grandeur of the Mysore Palace and the city's rich silk heritage.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800" }
+    ],
+    food: [
+      { city: "Amritsar", title: "Punjabi Flavors", desc: "Indulge in iconic Kulchas and rich Lassi near the Golden Temple.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800" },
+      { city: "Lucknow", title: "Nawabi Feast", desc: "Taste the world-famous Galouti Kebabs and authentic Awadhi biryani.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800" },
+      { city: "Kolkata", title: "Street Food Capital", desc: "From spicy Puchkas to sweet Rasgullas, a paradise for food lovers.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800" },
+      { city: "Hyderabad", title: "The Biryani Hub", desc: "Savor the legendary, slow-cooked Hyderabadi Dum Biryani and Haleem.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800" },
+      { city: "Old Delhi", title: "Chandni Chowk Bites", desc: "Navigate narrow lanes for legendary parathas, jalebis, and Mughlai curries.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800" }
+    ],
+    nature: [
+      { city: "Ranthambore", title: "Tiger Territory", desc: "Embark on thrilling safaris to spot the majestic Bengal Tiger in the wild.", img: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=800" },
+      { city: "Jim Corbett", title: "Himalayan Wilderness", desc: "India's oldest national park, offering pristine forests and rich wildlife.", img: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=800" },
+      { city: "Kaziranga", title: "Rhino Sanctuary", desc: "Explore the vast grasslands, home to the one-horned rhinoceros.", img: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=800" },
+      { city: "Sundarbans", title: "Mangrove Mystery", desc: "Navigate the largest mangrove forest in the world on a boat safari.", img: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=800" },
+      { city: "Munnar", title: "Tea Estate Trek", desc: "Walk through endless rolling hills of lush green tea plantations.", img: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=800" }
+    ],
+    private: [
+      { city: "Udaipur", title: "City of Lakes", desc: "Take a private boat ride on Lake Pichola and explore romantic island palaces.", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800" },
+      { city: "Rishikesh", title: "Yoga & Adventure", desc: "Enjoy a private yoga retreat or thrilling river rafting on the Ganges.", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800" },
+      { city: "Goa", title: "Secluded Beach Stays", desc: "Relax in a private luxury villa overlooking the serene Arabian Sea.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800" },
+      { city: "Mahabalipuram", title: "Coastal Carvings", desc: "Take a private guided tour of the ancient, monolithic rock temples.", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800" },
+      { city: "Darjeeling", title: "Himalayan Views", desc: "Ride the Toy Train and watch the sunrise over Mount Kanchenjunga.", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800" }
+    ]
+  };
+
+  // Random city selector
+  function handleCategoryClick(categoryKey) {
+    const options = categoryDatabase[categoryKey] || [];
+    if (options.length === 0) return;
+    const randomIdx = Math.floor(Math.random() * options.length);
+    setActiveCategoryData(options[randomIdx]);
+    setIsCategoryModalOpen(true);
+  }
+
   return (
     <div className="flex flex-col min-h-screen font-sans bg-white pb-0">
 
       {/* Immersive Hero */}
       <section className="relative w-full h-[85vh] flex items-center justify-center">
         <div className="absolute inset-0 bg-slate-900">
-          <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2000" alt="Kerala Backwaters" className="w-full h-full object-cover opacity-70" />
+          <img src="https://res.cloudinary.com/ddbqj52jr/image/upload/q_auto/f_auto/v1775652528/InShot_20260408_181744561.jpg_bpsssv.jpg" alt="India" className="w-full h-full object-cover opacity-70" />
         </div>
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-900 to-transparent"></div>
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center mt-20 w-full mb-12">
           <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl tracking-tight">
-            Discover the Soul of Kerala
+            Discover the Soul of India
           </h1>
         </div>
       </section>
 
-      {/* Our Popular Trips - ADDED INLINE STYLES FOR FORCED SPACING */}
+      {/* Our Popular Trips */}
       <section id="trips" className="bg-white relative z-20" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center" style={{ marginBottom: '100px' }}>
@@ -28,32 +74,32 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {[
               {
-                id: "kochi",
-                name: "Kochi Heritage",
+                id: "jaipur",
+                name: "Jaipur Heritage",
                 days: 3,
-                stats: "Rich History | 12 Attractions",
-                image: "https://res.cloudinary.com/ddbqj52jr/image/upload/f_auto,q_auto/koochi_ykvtzh"
+                stats: "Palaces & Forts | 12 Attractions",
+                image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=800"
               },
               {
-                id: "munnar",
-                name: "Munnar Retreat",
-                days: 3,
-                stats: "Relaxed Vibe | 10 Attractions",
-                image: "https://res.cloudinary.com/ddbqj52jr/image/upload/f_auto,q_auto/munnar-image-1_vgd8iu"
-              },
-              {
-                id: "alleppey",
-                name: "Alleppey Waters",
-                days: 2,
-                stats: "Houseboats | 5 Attractions",
-                image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=800"
-              },
-              {
-                id: "wayanad",
-                name: "Wayanad Trails",
+                id: "goa",
+                name: "Goa Retreat",
                 days: 4,
-                stats: "Adventure | 15 Attractions",
-                image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800"
+                stats: "Beaches & Culture | 10 Attractions",
+                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800"
+              },
+              {
+                id: "agra",
+                name: "Agra Wonders",
+                days: 2,
+                stats: "The Taj Mahal | 5 Attractions",
+                image: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800"
+              },
+              {
+                id: "varanasi",
+                name: "Varanasi Spirit",
+                days: 3,
+                stats: "Spiritual Ghats | 15 Attractions",
+                image: "https://res.cloudinary.com/ddbqj52jr/image/upload/q_auto/f_auto/v1775651240/varanasi_ftimbu.jpg"
               }
             ].map(trip => (
               <Link href={`/itinerary?city=${encodeURIComponent(trip.name.split(' ')[0])}&days=${trip.days}`} key={trip.id} className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 block">
@@ -73,60 +119,65 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Kerala Section */}
-      <section className="w-full bg-slate-50">
+      {/* About India Section */}
+      <section className="w-full bg-white">
         <div className="max-w-7xl mx-auto px-6 py-40">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="max-w-lg">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-teal-800 mb-8 tracking-tight">God's Own Country</h2>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-teal-800 mb-8 tracking-tight">Incredible India</h2>
               <p className="text-xl leading-relaxed text-slate-600 mb-6">
-                Kerala offers an unparalleled escape into nature. From the cascading waterfalls of Athirappilly to the serene networked backwaters of Kumarakom, every destination provides a canvas for lifelong memories.
+                India offers an unparalleled escape into diverse landscapes and ancient history. From the majestic forts of Rajasthan to the serene backwaters of the South, every destination provides a canvas for lifelong memories.
               </p>
               <p className="text-lg leading-relaxed text-slate-600">
-                Immerse yourself in profound spirituality and rejuvenating ayurvedic traditions.
+                Immerse yourself in profound spirituality, vibrant cultures, and world-renowned culinary traditions.
               </p>
             </div>
             <div>
-              <img src="https://res.cloudinary.com/ddbqj52jr/image/upload/f_auto,q_auto/kerala_vgegxj" alt="Kerala Scenic" className="w-full h-auto rounded-3xl shadow-2xl object-cover transform hover:scale-[1.02] transition-transform duration-500" />
+              <img src="https://res.cloudinary.com/ddbqj52jr/image/upload/v1775650787/india_ywszho.jpg" alt="India Scenic" className="w-full h-auto rounded-3xl shadow-2xl object-cover transform hover:scale-[1.02] transition-transform duration-500" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Us Section - REFINED PROFESSIONAL DESIGN */}
-      <section id="about" className="bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-32">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-orange-500 tracking-tight">Why SmartTour?</h2>
-            <p className="text-xl text-slate-500 mt-6 leading-relaxed">
-              SmartTour blends the timeless elegance of classic travel curation with the bleeding-edge intelligence of modern AI.
-            </p>
-          </div>
+      {/* Trust Strip */}
+      <section className="bg-slate-50 border-y border-slate-200" style={{ paddingTop: '48px', paddingBottom: '48px', marginTop: '60px' }}>
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-around items-center gap-6 text-center md:text-left">
+          <span className="text-sm font-bold text-slate-900 flex items-center gap-3">
+            <svg className="w-5 h-5 text-teal-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Free cancellation up to 24 hours
+          </span>
+          <span className="text-sm font-bold text-slate-900 flex items-center gap-3">
+            <svg className="w-5 h-5 text-teal-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+            Certified local guides in India
+          </span>
+          <span className="text-sm font-bold text-slate-900 flex items-center gap-3">
+            <svg className="w-5 h-5 text-teal-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Reserve now, pay later
+          </span>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-10 rounded-3xl border border-slate-100 shadow-[0_2px_20px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+      {/* Explore by Category */}
+      <section className="bg-white" style={{ paddingTop: '80px', paddingBottom: '80px', marginTop: '60px' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight" style={{ marginBottom: '40px' }}>Explore by category</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { id: "heritage", label: "Heritage & Culture", image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=800" },
+              { id: "food", label: "Food & Culinary", image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800" },
+              { id: "nature", label: "Nature & Wildlife", image: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=800" },
+              { id: "private", label: "Private Day Trips", image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800" },
+            ].map((cat) => (
+              <div
+                key={cat.label}
+                onClick={() => handleCategoryClick(cat.id)}
+                className="aspect-square relative rounded-2xl overflow-hidden cursor-pointer group"
+              >
+                <img src={cat.image} alt={cat.label} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
+                <p className="absolute bottom-6 left-6 text-xl font-bold text-white">{cat.label}</p>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Instant Itineraries</h3>
-              <p className="text-slate-500 text-lg leading-relaxed">Instantly generated, highly-personalized travel schedules matching your exact preferences.</p>
-            </div>
-
-            <div className="bg-white p-10 rounded-3xl border border-slate-100 shadow-[0_2px_20px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Real-Time Translation</h3>
-              <p className="text-slate-500 text-lg leading-relaxed">Break down language barriers with localized AI translation seamlessly integrated into the platform.</p>
-            </div>
-
-            <div className="bg-white p-10 rounded-3xl border border-slate-100 shadow-[0_2px_20px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Emergency SOS</h3>
-              <p className="text-slate-500 text-lg leading-relaxed">Context-aware, geolocation-based emergency routing keeping you safe anywhere in Kerala.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -138,24 +189,56 @@ export default function Home() {
             <span className="text-white font-extrabold tracking-tight">Smart</span>
             <span className="text-orange-500 font-extrabold tracking-tight">Tour</span>
           </div>
-
           <div className="text-slate-400 font-medium mb-8">
             <p>&copy; 2026 SmartTour Travel AI</p>
-            <p>Kochi, Kerala</p>
-          </div>
-
-          <div className="flex justify-center gap-12">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-400 hover:text-orange-500 transition-colors">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd"></path></svg>
-              <span className="font-bold text-lg">Facebook</span>
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-400 hover:text-orange-500 transition-colors">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd"></path></svg>
-              <span className="font-bold text-lg">Instagram</span>
-            </a>
+            <p>India</p>
           </div>
         </div>
       </footer>
+
+      {/* RANDOM CITY MODAL */}
+      {isCategoryModalOpen && activeCategoryData && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+          onClick={() => setIsCategoryModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsCategoryModalOpen(false)}
+              className="absolute top-4 right-4 bg-white/70 hover:bg-white text-slate-900 rounded-full w-8 h-8 flex items-center justify-center z-10 transition-colors shadow-sm"
+            >
+              ✕
+            </button>
+
+            {/* Hero Image */}
+            <div className="h-56 bg-slate-200 w-full relative">
+              <img src={activeCategoryData.img} alt={activeCategoryData.city} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            </div>
+
+            {/* Content Area */}
+            <div className="px-12 py-10 relative -mt-6 bg-white rounded-t-3xl">
+              <div className="text-orange-500 text-xs font-bold tracking-widest uppercase mb-2">Featured Destination</div>
+              <h3 className="text-3xl font-extrabold text-slate-900 mb-1">{activeCategoryData.city}</h3>
+              <h4 className="text-lg font-semibold text-teal-800 mb-4">{activeCategoryData.title}</h4>
+              <p className="text-slate-600 mb-8 leading-relaxed">{activeCategoryData.desc}</p>
+
+              {/* Action Button linking to Itinerary Generator */}
+              <Link
+                href={`/itinerary?city=${encodeURIComponent(activeCategoryData.city)}&days=3`}
+                className="block w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-colors shadow-lg hover:shadow-xl"
+              >
+                Plan 3 Days in {activeCategoryData.city}
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -97,8 +97,8 @@ export default function AIMode() {
         {/* Blurred Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2000"
-            alt="Kerala background"
+            src="https://res.cloudinary.com/ddbqj52jr/image/upload/q_auto/f_auto/v1775652528/InShot_20260408_181744561.jpg_bpsssv.jpg"
+            alt="India"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 backdrop-blur-md bg-white/5"></div>
@@ -109,11 +109,11 @@ export default function AIMode() {
           <h1 className="text-5xl sm:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight">
             Smart<span className="text-orange-500">Tour</span>
           </h1>
-          <p className="text-xl sm:text-2xl text-slate-500 font-medium mt-4">AI Assistant</p>
+          <p className="text-xl sm:text-2xl text-black font-medium mt-4">AI Assistant</p>
           {/* Subtle animated pulse indicator */}
           <div className="mt-6 flex items-center justify-center gap-2">
             <span className={`w-2.5 h-2.5 rounded-full ${isListening ? 'bg-red-500 animate-ping' : 'bg-orange-400 animate-pulse'}`}></span>
-            <span className="text-sm text-slate-400 font-medium">
+            <span className="text-sm text-black font-medium">
               {isListening ? "Listening..." : "Ready — type or speak your request"}
             </span>
           </div>
@@ -149,7 +149,7 @@ export default function AIMode() {
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleBrainSubmit()}
               autoFocus
-              placeholder="e.g. Plan a 3-day trip to Munnar, or translate 'hello'..."
+              placeholder="e.g. Plan a 3-day trip to Agra, or translate 'hello'..."
               className="flex-1 bg-transparent text-slate-900 text-lg placeholder-slate-400 focus:outline-none py-1 px-2"
               disabled={isRouting}
             />
@@ -187,9 +187,9 @@ export default function AIMode() {
         {/* Suggestion chips */}
         <div className="flex flex-wrap justify-center gap-3 mt-10 relative z-10">
           {[
-            "Plan 3-day trip to Munnar",
+            "Plan 3-day trip to Jaipur",
             "Find nearby hospitals",
-            "Translate 'Thank you' to Malayalam",
+            "Translate 'Thank you' to Hindi",
             "Best food near me",
           ].map((chip) => (
             <button
@@ -213,7 +213,7 @@ export default function AIMode() {
 
           <div className="text-slate-400 font-medium mb-8">
             <p>&copy; 2026 SmartTour Travel AI</p>
-            <p>Kochi, Kerala</p>
+            <p>Kochi, India</p>
           </div>
 
           <div className="flex justify-center gap-12">

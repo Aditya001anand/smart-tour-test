@@ -14,7 +14,7 @@ export async function POST(req) {
     let lon = 76.5;
     try {
       const geoRes = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city + ', Kerala, India')}&format=json&limit=1`,
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city + ', India')}&format=json&limit=1`,
         { headers: { 'User-Agent': 'SmartTourKerala_ItineraryGen/1.0' } }
       );
       const geodata = await geoRes.json();
@@ -96,10 +96,25 @@ export async function POST(req) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    const prompt = `You are a Kerala Travel Expert. Plan a ${days}-day itinerary for ${city}. Use this real location data: ${JSON.stringify(minifiedData)}. Format as clean Markdown. Do NOT use tools.`;
+    const prompt = `You are an India Travel Expert. Plan a ${days}-day itinerary for ${city}. Use this real location data: ${JSON.stringify(minifiedData)}. Format as clean Markdown. Do NOT use tools.`;
 
-    const result = await model.generateContent(prompt);
-    let markdownText = result.response.text();
+    let markdownText = "";
+    let retries = 3;
+    
+    for (let i = 0; i < retries; i++) {
+      try {
+        const result = await model.generateContent(prompt);
+        markdownText = result.response.text();
+        break; // Success, exit loop
+      } catch (err) {
+        if ((err.status === 503 || err.message.includes('503') || err.message.includes('Service Unavailable')) && i < retries - 1) {
+          console.warn(`[GEMINI] 503 Error on attempt ${i + 1}. Retrying in 2 seconds...`);
+          await new Promise(res => setTimeout(res, 2000));
+        } else {
+          throw err;
+        }
+      }
+    }
     
     // Safety check just in case it returns an empty string
     if (!markdownText) {

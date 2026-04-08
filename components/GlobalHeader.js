@@ -34,7 +34,7 @@ export default function GlobalHeader({ isScrolled }) {
           <button onClick={handleFoodClick} className="text-teal-800 font-bold hover:text-orange-500 transition-colors drop-shadow-sm">FOOD</button>
           <button onClick={() => router.push('/translate')} className="text-teal-800 font-bold hover:text-orange-500 transition-colors drop-shadow-sm">TRANSLATE</button>
           <Link href="/ai-mode" className={getLinkClass('/ai-mode')}>AI MODE</Link>
-          <Link href="/#about" className={getLinkClass('/#about')}>ABOUT US</Link>
+
         </nav>
         <div className="flex items-center gap-4">
           {isSignedIn ? (
@@ -48,7 +48,7 @@ export default function GlobalHeader({ isScrolled }) {
                 <button className="text-slate-900 hover:text-orange-500 transition-colors font-semibold">Log In</button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg transition-colors font-bold shadow-md">Sign Up</button>
+                <button className="text-slate-900 hover:text-orange-500 transition-colors font-semibold">Sign Up</button>
               </SignUpButton>
             </div>
           )}
