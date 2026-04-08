@@ -45,6 +45,7 @@ export default function Home() {
     if (options.length === 0) return;
     const randomIdx = Math.floor(Math.random() * options.length);
     setActiveCategoryData(options[randomIdx]);
+
     setIsCategoryModalOpen(true);
   }
 
