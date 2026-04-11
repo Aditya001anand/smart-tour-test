@@ -131,7 +131,7 @@ export default function SOSFab() {
       {/* Main FAB */}
       <button 
         onClick={() => setExpanded(!expanded)}
-        className="w-16 h-16 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white shadow-2xl relative z-10 transition-transform hover:scale-105"
+        className="cursor-pointer w-16 h-16 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white shadow-2xl relative z-10 transition-transform hover:scale-105"
       >
         <div className="absolute inset-0 rounded-full border-4 border-red-500 animate-ping opacity-75"></div>
         <span className="font-extrabold text-xl tracking-wider">SOS</span>
