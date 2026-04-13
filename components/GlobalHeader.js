@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { UserButton, useUser, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { useLocation } from '@/lib/hooks/useLocation';
+import Image from "next/image";
 
 export default function GlobalHeader({ isScrolled }) {
   const pathname = usePathname();
@@ -22,12 +23,14 @@ export default function GlobalHeader({ isScrolled }) {
   };
 
   return (
-    <nav className="fixed w-full z-[100] top-0 bg-white shadow-md border-b border-slate-100 py-4 print:hidden">
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="text-3xl flex items-center gap-1">
-          <span className="text-slate-900 font-extrabold tracking-tight">Smart</span>
-          <span className="text-orange-500 font-extrabold tracking-tight">Tour</span>
-        </Link>
+    <nav className="fixed top-0 w-full z-[100] bg-white shadow-md border-b border-slate-100 h-15 flex items-center print:hidden">
+  
+  <div className="w-full pl-16 pr-6 flex items-center justify-between">
+    
+    <Link href="/" className="text-3xl flex items-center gap-1">
+      <span className="text-slate-900 font-extrabold tracking-tight">𝕊mart</span>
+      <span className="text-orange-500 font-extrabold tracking-tight">𝕋our</span>
+    </Link>
         <nav className="hidden md:flex items-center gap-8">
           <Link href="/" className={getLinkClass('/')}>HOME</Link>
           <Link href="/guide" className={getLinkClass('/guide')}>GUIDES</Link>
@@ -43,14 +46,13 @@ export default function GlobalHeader({ isScrolled }) {
               <UserButton afterSignOutUrl="/" appearance={{ elements: { userButtonAvatarBox: { width: 36, height: 36 } } }} />
             </div>
           ) : (
-            <div className="flex items-center gap-4 pl-2">
-              <SignInButton mode="modal">
-                <button className="text-slate-900 hover:text-orange-500 transition-colors font-semibold">Log In</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="text-slate-900 hover:text-orange-500 transition-colors font-semibold">Sign Up</button>
-              </SignUpButton>
-            </div>
+           <div className="flex items-center gap-4 pl-2">
+  <SignInButton mode="modal">
+    <button className="w-30 px-10 py-3 cursor-pointer rounded-full bg-orange-500 text-white font-semibold text-lg shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-300">
+      Log In
+    </button>
+  </SignInButton>
+</div>
           )}
         </div>
       </div>
